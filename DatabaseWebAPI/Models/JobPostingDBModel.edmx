@@ -1,0 +1,642 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="JobPostingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblStatus">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="varchar" MaxLength="60" />
+        </EntityType>
+        <EntityType Name="tblJobs">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RemoteServiceID" Type="int" />
+          <Property Name="PythonCode" Type="varchar(max)" />
+          <Property Name="Result" Type="varchar(max)" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblRemoteServices">
+          <Key>
+            <PropertyRef Name="RemoteServiceID" />
+          </Key>
+          <Property Name="RemoteServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="16" />
+          <Property Name="Port" Type="int" />
+          <Property Name="IsAllocated" Type="bit" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblClient">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="25" />
+          <Property Name="Email" Type="varchar" MaxLength="75" />
+          <Property Name="Password" Type="varchar" MaxLength="150" />
+          <Property Name="FirstName" Type="varchar" MaxLength="20" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblLoginHistory">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="75" />
+          <Property Name="ClientID" Type="int" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="ActionDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblTokens">
+          <Key>
+            <PropertyRef Name="TokenID" />
+          </Key>
+          <Property Name="TokenID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TokenCode" Type="varchar" MaxLength="75" />
+          <Property Name="ClientID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_tblClient_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatus" Multiplicity="0..1" />
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblClient">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblClient1">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblClient2">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblRemoteServices">
+          <End Role="tblRemoteServices" Type="Self.tblRemoteServices" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRemoteServices">
+              <PropertyRef Name="RemoteServiceID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="RemoteServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatus" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLoaginHistory_tblClient">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblLoginHistory" Type="Self.tblLoginHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblLoginHistory">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLoginHistory_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatus" Multiplicity="0..1" />
+          <End Role="tblLoginHistory" Type="Self.tblLoginHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblLoginHistory">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRemoteServices_tblClient1">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblRemoteServices" Type="Self.tblRemoteServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblRemoteServices">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRemoteServices_tblClient2">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblRemoteServices" Type="Self.tblRemoteServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblRemoteServices">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRemoteServices_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatus" Multiplicity="0..1" />
+          <End Role="tblRemoteServices" Type="Self.tblRemoteServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblRemoteServices">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTokens_tblClient">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblTokens" Type="Self.tblTokens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblTokens">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JobPostingDBModelStoreContainer">
+          <EntitySet Name="tblStatus" EntityType="Self.tblStatus" Schema="mas" store:Type="Tables" />
+          <EntitySet Name="tblJobs" EntityType="Self.tblJobs" Schema="srv" store:Type="Tables" />
+          <EntitySet Name="tblRemoteServices" EntityType="Self.tblRemoteServices" Schema="srv" store:Type="Tables" />
+          <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="usr" store:Type="Tables" />
+          <EntitySet Name="tblLoginHistory" EntityType="Self.tblLoginHistory" Schema="usr" store:Type="Tables" />
+          <EntitySet Name="tblTokens" EntityType="Self.tblTokens" Schema="usr" store:Type="Tables" />
+          <AssociationSet Name="FK_tblClient_tblStatus" Association="Self.FK_tblClient_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblClient" EntitySet="tblClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblClient1" Association="Self.FK_tblJobs_tblClient1">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblClient2" Association="Self.FK_tblJobs_tblClient2">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblRemoteServices" Association="Self.FK_tblJobs_tblRemoteServices">
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblStatus" Association="Self.FK_tblJobs_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLoaginHistory_tblClient" Association="Self.FK_tblLoaginHistory_tblClient">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblLoginHistory" EntitySet="tblLoginHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLoginHistory_tblStatus" Association="Self.FK_tblLoginHistory_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblLoginHistory" EntitySet="tblLoginHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRemoteServices_tblClient1" Association="Self.FK_tblRemoteServices_tblClient1">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRemoteServices_tblClient2" Association="Self.FK_tblRemoteServices_tblClient2">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRemoteServices_tblStatus" Association="Self.FK_tblRemoteServices_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTokens_tblClient" Association="Self.FK_tblTokens_tblClient">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblTokens" EntitySet="tblTokens" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JobPostingDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblStatu">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblClients" Relationship="Self.FK_tblClient_tblStatus" FromRole="tblStatus" ToRole="tblClient" />
+          <NavigationProperty Name="tblJobs" Relationship="Self.FK_tblJobs_tblStatus" FromRole="tblStatus" ToRole="tblJobs" />
+          <NavigationProperty Name="tblLoginHistories" Relationship="Self.FK_tblLoginHistory_tblStatus" FromRole="tblStatus" ToRole="tblLoginHistory" />
+          <NavigationProperty Name="tblRemoteServices" Relationship="Self.FK_tblRemoteServices_tblStatus" FromRole="tblStatus" ToRole="tblRemoteServices" />
+        </EntityType>
+        <EntityType Name="tblJob">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RemoteServiceID" Type="Int32" />
+          <Property Name="PythonCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Result" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StatusID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblStatu" Relationship="Self.FK_tblJobs_tblStatus" FromRole="tblJobs" ToRole="tblStatus" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblJobs_tblClient1" FromRole="tblJobs" ToRole="tblClient" />
+          <NavigationProperty Name="tblClient1" Relationship="Self.FK_tblJobs_tblClient2" FromRole="tblJobs" ToRole="tblClient" />
+          <NavigationProperty Name="tblRemoteService" Relationship="Self.FK_tblJobs_tblRemoteServices" FromRole="tblJobs" ToRole="tblRemoteServices" />
+        </EntityType>
+        <EntityType Name="tblRemoteService">
+          <Key>
+            <PropertyRef Name="RemoteServiceID" />
+          </Key>
+          <Property Name="RemoteServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IPAddress" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="Port" Type="Int32" />
+          <Property Name="IsAllocated" Type="Boolean" />
+          <Property Name="StatusID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblStatu" Relationship="Self.FK_tblRemoteServices_tblStatus" FromRole="tblRemoteServices" ToRole="tblStatus" />
+          <NavigationProperty Name="tblJobs" Relationship="Self.FK_tblJobs_tblRemoteServices" FromRole="tblRemoteServices" ToRole="tblJobs" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblRemoteServices_tblClient1" FromRole="tblRemoteServices" ToRole="tblClient" />
+          <NavigationProperty Name="tblClient1" Relationship="Self.FK_tblRemoteServices_tblClient2" FromRole="tblRemoteServices" ToRole="tblClient" />
+        </EntityType>
+        <EntityType Name="tblClient">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatusID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblStatu" Relationship="Self.FK_tblClient_tblStatus" FromRole="tblClient" ToRole="tblStatus" />
+          <NavigationProperty Name="tblJobs" Relationship="Self.FK_tblJobs_tblClient1" FromRole="tblClient" ToRole="tblJobs" />
+          <NavigationProperty Name="tblJobs1" Relationship="Self.FK_tblJobs_tblClient2" FromRole="tblClient" ToRole="tblJobs" />
+          <NavigationProperty Name="tblRemoteServices" Relationship="Self.FK_tblRemoteServices_tblClient1" FromRole="tblClient" ToRole="tblRemoteServices" />
+          <NavigationProperty Name="tblRemoteServices1" Relationship="Self.FK_tblRemoteServices_tblClient2" FromRole="tblClient" ToRole="tblRemoteServices" />
+          <NavigationProperty Name="tblLoginHistories" Relationship="Self.FK_tblLoaginHistory_tblClient" FromRole="tblClient" ToRole="tblLoginHistory" />
+          <NavigationProperty Name="tblTokens" Relationship="Self.FK_tblTokens_tblClient" FromRole="tblClient" ToRole="tblTokens" />
+        </EntityType>
+        <EntityType Name="tblLoginHistory">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="StatusID" Type="Int32" />
+          <Property Name="ActionDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblStatu" Relationship="Self.FK_tblLoginHistory_tblStatus" FromRole="tblLoginHistory" ToRole="tblStatus" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblLoaginHistory_tblClient" FromRole="tblLoginHistory" ToRole="tblClient" />
+        </EntityType>
+        <EntityType Name="tblToken">
+          <Key>
+            <PropertyRef Name="TokenID" />
+          </Key>
+          <Property Name="TokenID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TokenCode" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblTokens_tblClient" FromRole="tblTokens" ToRole="tblClient" />
+        </EntityType>
+        <Association Name="FK_tblClient_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatu" Multiplicity="0..1" />
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblClient">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatu" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLoginHistory_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatu" Multiplicity="0..1" />
+          <End Role="tblLoginHistory" Type="Self.tblLoginHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblLoginHistory">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRemoteServices_tblStatus">
+          <End Role="tblStatus" Type="Self.tblStatu" Multiplicity="0..1" />
+          <End Role="tblRemoteServices" Type="Self.tblRemoteService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStatus">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="tblRemoteServices">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblClient1">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblClient2">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblJobs_tblRemoteServices">
+          <End Role="tblRemoteServices" Type="Self.tblRemoteService" Multiplicity="0..1" />
+          <End Role="tblJobs" Type="Self.tblJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRemoteServices">
+              <PropertyRef Name="RemoteServiceID" />
+            </Principal>
+            <Dependent Role="tblJobs">
+              <PropertyRef Name="RemoteServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRemoteServices_tblClient1">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblRemoteServices" Type="Self.tblRemoteService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblRemoteServices">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRemoteServices_tblClient2">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblRemoteServices" Type="Self.tblRemoteService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblRemoteServices">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLoaginHistory_tblClient">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblLoginHistory" Type="Self.tblLoginHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblLoginHistory">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTokens_tblClient">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="0..1" />
+          <End Role="tblTokens" Type="Self.tblToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="tblTokens">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JobPostingDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblStatus" EntityType="Self.tblStatu" />
+          <EntitySet Name="tblJobs" EntityType="Self.tblJob" />
+          <EntitySet Name="tblRemoteServices" EntityType="Self.tblRemoteService" />
+          <EntitySet Name="tblClients" EntityType="Self.tblClient" />
+          <EntitySet Name="tblLoginHistories" EntityType="Self.tblLoginHistory" />
+          <EntitySet Name="tblTokens" EntityType="Self.tblToken" />
+          <AssociationSet Name="FK_tblClient_tblStatus" Association="Self.FK_tblClient_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblClient" EntitySet="tblClients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblStatus" Association="Self.FK_tblJobs_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLoginHistory_tblStatus" Association="Self.FK_tblLoginHistory_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblLoginHistory" EntitySet="tblLoginHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRemoteServices_tblStatus" Association="Self.FK_tblRemoteServices_tblStatus">
+            <End Role="tblStatus" EntitySet="tblStatus" />
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblClient1" Association="Self.FK_tblJobs_tblClient1">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblClient2" Association="Self.FK_tblJobs_tblClient2">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblJobs_tblRemoteServices" Association="Self.FK_tblJobs_tblRemoteServices">
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+            <End Role="tblJobs" EntitySet="tblJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRemoteServices_tblClient1" Association="Self.FK_tblRemoteServices_tblClient1">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRemoteServices_tblClient2" Association="Self.FK_tblRemoteServices_tblClient2">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblRemoteServices" EntitySet="tblRemoteServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLoaginHistory_tblClient" Association="Self.FK_tblLoaginHistory_tblClient">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblLoginHistory" EntitySet="tblLoginHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTokens_tblClient" Association="Self.FK_tblTokens_tblClient">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblTokens" EntitySet="tblTokens" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JobPostingDBModelStoreContainer" CdmEntityContainer="JobPostingDBEntities">
+          <EntitySetMapping Name="tblStatus">
+            <EntityTypeMapping TypeName="JobPostingDBModel.tblStatu">
+              <MappingFragment StoreEntitySet="tblStatus">
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblJobs">
+            <EntityTypeMapping TypeName="JobPostingDBModel.tblJob">
+              <MappingFragment StoreEntitySet="tblJobs">
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="RemoteServiceID" ColumnName="RemoteServiceID" />
+                <ScalarProperty Name="PythonCode" ColumnName="PythonCode" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRemoteServices">
+            <EntityTypeMapping TypeName="JobPostingDBModel.tblRemoteService">
+              <MappingFragment StoreEntitySet="tblRemoteServices">
+                <ScalarProperty Name="RemoteServiceID" ColumnName="RemoteServiceID" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="IsAllocated" ColumnName="IsAllocated" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClients">
+            <EntityTypeMapping TypeName="JobPostingDBModel.tblClient">
+              <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLoginHistories">
+            <EntityTypeMapping TypeName="JobPostingDBModel.tblLoginHistory">
+              <MappingFragment StoreEntitySet="tblLoginHistory">
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="ActionDate" ColumnName="ActionDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTokens">
+            <EntityTypeMapping TypeName="JobPostingDBModel.tblToken">
+              <MappingFragment StoreEntitySet="tblTokens">
+                <ScalarProperty Name="TokenID" ColumnName="TokenID" />
+                <ScalarProperty Name="TokenCode" ColumnName="TokenCode" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
