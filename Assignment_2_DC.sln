@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32519.111
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseWebAPI", "DatabaseWebAPI\DatabaseWebAPI.csproj", "{D7AAD9BB-BB77-4AB3-9052-1B215929CDE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authenticator", "Authenticator\Authenticator.csproj", "{333B9E55-E246-4D92-B7A1-CCCCC517FB31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D7AAD9BB-BB77-4AB3-9052-1B215929CDE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7AAD9BB-BB77-4AB3-9052-1B215929CDE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7AAD9BB-BB77-4AB3-9052-1B215929CDE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{333B9E55-E246-4D92-B7A1-CCCCC517FB31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{333B9E55-E246-4D92-B7A1-CCCCC517FB31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{333B9E55-E246-4D92-B7A1-CCCCC517FB31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{333B9E55-E246-4D92-B7A1-CCCCC517FB31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
