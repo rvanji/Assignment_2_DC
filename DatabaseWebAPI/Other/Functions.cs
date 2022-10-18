@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace DatabaseWebAPI.Other
 {
-    public class Functions
+    public class Functions1
     {
         #region Encoding/Decoding
         public string EncodeString(string text)
@@ -24,6 +25,30 @@ namespace DatabaseWebAPI.Other
 
             byte[] encodedBytes = Convert.FromBase64String(base64Text);
             return System.Text.Encoding.UTF8.GetString(encodedBytes);
+        }
+        #endregion
+
+        #region Validations
+        public bool IsValidEmail(string email)
+        {
+            Regex regexEmail = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regexEmail.Match(email);
+            
+            if (match.Success) 
+                return true;
+            else 
+                return false;
+        }
+
+        public bool IsLettersSpacesOnly(string text)
+        {
+            Regex regexLettersSpaces = new Regex(@"/^[a-zA-Z\s]*$/");
+            Match match = regexLettersSpaces.Match(text);
+
+            if (match.Success)
+                return true;
+            else
+                return false;
         }
         #endregion
     }
