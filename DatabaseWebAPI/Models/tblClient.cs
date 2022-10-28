@@ -34,6 +34,7 @@ namespace DatabaseWebAPI.Models
         public Nullable<int> StatusID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<bool> IsOnline { get; set; }
     
         public virtual tblStatu tblStatu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

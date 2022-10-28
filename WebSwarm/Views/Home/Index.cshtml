@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Swarm";
+}
+
+@{
+    @using WebSwarm.Models;
+    @model RemoteServicesModel;
+}
+
+<link href="../css/index.css?v=1" rel="stylesheet" />
+
+<div class="container">
+    @if (Model != null)
+    {
+        @if (Model.RemoteServices != null)
+        {
+            @if(Model.RemoteServices.Count == 0)
+            {
+               <h4 class="error-message">There are no remote services to show</h4> 
+            }
+            else
+            {
+                @foreach (var remoteService in Model.RemoteServices)
+                {
+                    <div class="card">
+                        <div class="container">
+                            <p><strong>IP Address: </strong> @remoteService.IPAddress</p>
+                            <p><strong>Port: </strong> @remoteService.Port</p>
+                            <p><strong>No. Jobs: </strong> @remoteService.NoOfJobs</p>
+                            <p><strong>Allocated: </strong> @remoteService.IsAllocated</p>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+</div>
+
+<script src="../js/index.js?v=2"></script>

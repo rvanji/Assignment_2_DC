@@ -51,18 +51,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IAuthenticationService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="AuthenticationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{DD27E1DB-AE9F-4B18-ABED-DCAD530C69C0}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatabaseWebAPI\DatabaseWebAPI.csproj">
-      <Project>{d7aad9bb-bb77-4ab3-9052-1b215929cde1}</Project>
+      <Project>{D7AAD9BB-BB77-4AB3-9052-1B215929CDE1}</Project>
       <Name>DatabaseWebAPI</Name>
     </ProjectReference>
   </ItemGroup>

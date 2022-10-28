@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="JobPostingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="JobPostingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblStatus">
           <Key>
             <PropertyRef Name="StatusID" />
@@ -50,6 +50,7 @@
           <Property Name="Password" Type="varchar" MaxLength="150" />
           <Property Name="FirstName" Type="varchar" MaxLength="20" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="IsOnline" Type="bit" />
           <Property Name="StatusID" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedDate" Type="datetime" />
@@ -257,8 +258,7 @@
             <End Role="tblTokens" EntitySet="tblTokens" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="JobPostingDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -329,6 +329,7 @@
           <NavigationProperty Name="tblRemoteServices1" Relationship="Self.FK_tblRemoteServices_tblClient2" FromRole="tblClient" ToRole="tblRemoteServices" />
           <NavigationProperty Name="tblLoginHistories" Relationship="Self.FK_tblLoaginHistory_tblClient" FromRole="tblClient" ToRole="tblLoginHistory" />
           <NavigationProperty Name="tblTokens" Relationship="Self.FK_tblTokens_tblClient" FromRole="tblClient" ToRole="tblTokens" />
+          <Property Name="IsOnline" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblLoginHistory">
           <Key>
@@ -583,6 +584,7 @@
           <EntitySetMapping Name="tblClients">
             <EntityTypeMapping TypeName="JobPostingDBModel.tblClient">
               <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Email" ColumnName="Email" />

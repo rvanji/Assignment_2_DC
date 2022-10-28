@@ -1,0 +1,1 @@
+Make sure to copy local database "DatabaseWebAPI/App_Data/jobPostingDB.mdf" to "C:/Assignment_2_DC/jobPostingDB.mdf".

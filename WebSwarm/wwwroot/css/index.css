@@ -1,0 +1,30 @@
+﻿body {
+    background-image: url("../img/bg2.jpg");
+    font-family: 'Rubik', sans-serif;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    max-width: 235px;
+    min-height: 150px;
+    padding: 10px;
+    margin: 25px;
+    background-color: white;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+    padding: 2px 16px;
+}
+
+.error-message {
+    margin-left: 37px;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: red;
+}

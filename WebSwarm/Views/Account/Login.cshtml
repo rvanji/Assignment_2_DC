@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Login";
+}
+
+@{
+    @using WebSwarm.Models;
+    @model ClientModel;
+}
+
+<link href="../css/login.css?v=3" rel="stylesheet" />
+
+@Html.Hidden("ProcessLogin", Url.Action("ProcessLogin", "Account"))
+@Html.Hidden("Index", Url.Action("Index", "Home"))
+
+<div class="login-form">
+    @if (Model != null && Model.ErrorMessage != null)
+    {
+        <h4 class="error-message">@Model.ErrorMessage</h4>
+    }
+
+    <h1>Login</h1>
+    <div class="content">
+        <div class="input-field">
+            <input id="Email" name="Email" type="email" placeholder="Email" autocomplete="nope">
+        </div>
+        <div class="input-field">
+            <input id="Password" name="Password" type="password" placeholder="Password" autocomplete="new-password">
+        </div>
+    </div>
+    <div class="action">
+        <button type="button" onclick="ProcessLogin()">Sign in</button>
+    </div>
+</div>
+
+<script src="../js/login.js?v=6"></script>
